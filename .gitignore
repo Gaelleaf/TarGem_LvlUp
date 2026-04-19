@@ -1,1 +1,5 @@
-Library/PackageCache/**
+Library/
+Temp/
+Obj/
+Build/
+Builds/
