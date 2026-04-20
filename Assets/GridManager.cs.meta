@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7b81abf2af1cfad4f874335d2423295c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tileDark: {fileID: 2100000, guid: d4a43805352507a4b8b78c2e60c9b12a, type: 2}
+  - tileLight: {fileID: 2100000, guid: 29eb9a7df7e18dc41a84e17ce58e592e, type: 2}
+  - highlightMaterial: {fileID: 2100000, guid: 031bf41653817f64d809470b8330eeb6, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
