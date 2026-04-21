@@ -45,3 +45,13 @@ Thumbs.db
 *.apk
 *.aab
 *.unitypackage
+# =========================
+# Logs
+# =========================
+Logs/
+*.log
+output_log.txt
+Player.log
+Editor.log
+*.dmp
+Crashlytics/
