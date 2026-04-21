@@ -45,6 +45,7 @@ Thumbs.db
 *.apk
 *.aab
 *.unitypackage
+
 # =========================
 # Logs
 # =========================
@@ -55,3 +56,9 @@ Player.log
 Editor.log
 *.dmp
 Crashlytics/
+Assembly-CSharp.csproj
+
+# =========================
+# Unity layout
+# =========================
+UserSettings\Layouts\default-6000.dwlt
