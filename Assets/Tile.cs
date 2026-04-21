@@ -5,6 +5,13 @@ public class Tile : MonoBehaviour
     private Renderer renderer;
     public Material defaultMaterial;
     public Material highlightMaterial;
+    public Material reachableMaterial;
+    
+    public int x;
+    public int z;
+    
+    public bool isWall = false;
+    public bool isOccupied = false;
 
     void Awake()
     {
@@ -18,7 +25,11 @@ public class Tile : MonoBehaviour
 
     public void SetHighlight()
     {
-
         renderer.material = highlightMaterial;
+    }
+    
+    public void SetReacheble()
+    {
+        renderer.material = reachableMaterial;
     }
 }
