@@ -5,6 +5,12 @@ public class Unit : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public int maxDistance = 4;
+    public int shootDistance = 0;
+    public UnitType unitType;
+    
+    
+    public bool canShoot = false;
+    public bool canMove = false;
 
     private Vector3 targetPos;
     private Stack<Tile> pathToTarget = new Stack<Tile>();
@@ -25,16 +31,19 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void MoveTo(Stack<Tile> path)
+    public void MoveTo(Stack<Tile> path, Tile target)
     {
         if (path == null) return;
+        tile.isOccupied = false;
+        tile = target;
+        tile.isOccupied = true;
         pathToTarget = path;
     }
     
     void MoveToNextTile()
     {
-        tile = pathToTarget.Pop();
-        targetPos = tile.transform.position;
+        Tile t = pathToTarget.Pop();
+        targetPos = t.transform.position;
         targetPos.y = 0.5f;
         isMoving = true;
     }

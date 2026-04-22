@@ -3,19 +3,26 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
-    public int WIDTH = 10;
-    public int HEIGHT = 10;
+    public LevelData levelData;
+    public int WIDTH;
+    public int HEIGHT;
     public float TILE_SIZE = 1f;
     public Material tileDark;
     public Material tileLight;
     public Material highlightMaterial;
     public Material reachableMaterial;
     public Tile[,] grid;
+    
+    public GameObject unitPrefab;
 
     void Awake()
     {
+        WIDTH = levelData.width;
+        HEIGHT = levelData.height;
+        
         GenerateGrid();
         CreateWalls();
+        SetUpUnits();
     }
 
     void GenerateGrid()
@@ -49,17 +56,41 @@ public class GridManager : MonoBehaviour
         tile.isWall = true;
         GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
         wall.transform.position = new Vector3(x, 0.5f, z);
+        wall.tag = "Wall";
     }
 
     void CreateWalls()
     {
-        MakeWallAt(1, 1);
-        MakeWallAt(1 ,0);
-        /*
-        MakeWallAt(2, 0);
-        MakeWallAt(3, 1);
-        MakeWallAt(2, 2);
-        MakeWallAt(0, 1);*/
+        foreach (Vector2Int pos in levelData.wallPositions)
+        {
+            MakeWallAt(pos.x, pos.y);
+        }
+    }
+    
+    void SetUpUnits()
+    {
+        UnitManager unitManager = FindAnyObjectByType<UnitManager>();
+        foreach (var data in levelData.units)
+        {
+            GameObject unitObj = Instantiate(unitPrefab);
+            unitObj.transform.position = new Vector3(
+                data.position.x,
+                0.5f,
+                data.position.y                
+            );
+            
+            Unit unit = unitObj.GetComponent<Unit>();
+            
+            unit.unitType = data.unitType;
+            unit.maxDistance = data.moveDist;
+            unit.shootDistance = data.shootDist;
+            unit.tile = grid[data.position.x, data.position.y];
+            unit.tile.isOccupied = true;
+            unit.canMove = true;
+            unit.canShoot = true;
+            
+            unitManager.RegisterUnit(unit);
+        }
     }
 
     public List<Tile> GetReachableTiles(Tile startTile, int range)
