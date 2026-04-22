@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2ac5917ce71c0a64e9128a141c0d287e
+guid: f6416abe7c2420247a09f278af15d80d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2668207854418714315
-    second: m_46_0
+      213: 3891269495536304776
+    second: Gear_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,35 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: m_46_0
+      name: Gear_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 54
-        height: 63
+        width: 1024
+        height: 1024
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
-      outline: []
+      outline:
+      - - {x: -395, y: 261}
+        - {x: -452, y: 24}
+        - {x: -394, y: -209}
+        - {x: -225, y: -376}
+        - {x: -1, y: -430}
+        - {x: 234, y: -367}
+        - {x: 397, y: -200}
+        - {x: 458, y: 24}
+        - {x: 396, y: 248}
+        - {x: 237, y: 409}
+        - {x: 3, y: 456}
+        - {x: -230, y: 412}
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: bced88528e0670520800000000000000
-      internalID: 2668207854418714315
+      spriteID: 88241c64df0900630800000000000000
+      internalID: 3891269495536304776
       vertices: []
       indices: 
       edges: []
@@ -138,7 +150,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 568aa9a42712ffe40b61bdd6efd434e1
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +160,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      m_46_0: 2668207854418714315
+      Gear_0: 3891269495536304776
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
