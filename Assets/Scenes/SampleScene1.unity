@@ -166,7 +166,7 @@ MonoBehaviour:
   shootButton: {fileID: 0}
   inputMode: 0
   gridManager: {fileID: 839937382}
-  unitManager: {fileID: 0}
+  unitManager: {fileID: 1911264034}
   unit: {fileID: 1371543044}
 --- !u!1 &519420028
 GameObject:
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b81abf2af1cfad4f874335d2423295c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  levelData: {fileID: 0}
+  levelData: {fileID: 11400000, guid: 381e08e7809553a48b29af8aeeabb195, type: 2}
   WIDTH: 10
   HEIGHT: 10
   TILE_SIZE: 1
