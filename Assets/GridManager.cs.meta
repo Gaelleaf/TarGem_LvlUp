@@ -4,9 +4,13 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
+  - levelData: {instanceID: 0}
   - tileDark: {fileID: 2100000, guid: d4a43805352507a4b8b78c2e60c9b12a, type: 2}
   - tileLight: {fileID: 2100000, guid: 29eb9a7df7e18dc41a84e17ce58e592e, type: 2}
   - highlightMaterial: {fileID: 2100000, guid: 031bf41653817f64d809470b8330eeb6, type: 2}
+  - reachableMaterial: {fileID: 2100000, guid: 006cc235245a1c6409b42bbc23172d4f, type: 2}
+  - wallMaterial: {fileID: 2100000, guid: 6186d9cf2d65b744c9ad282082f81a7d, type: 2}
+  - unitPrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

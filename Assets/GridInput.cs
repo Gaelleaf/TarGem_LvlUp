@@ -231,9 +231,9 @@ public class GridInput : MonoBehaviour
         unitManager.ActiveUnit.canMove = unitManager.ActiveUnit.canShoot = false;
         
         isPlayerTurn = unitManager.ChangeActiveUnitToActableOrEndTurn();
+        ResetAllTiles();
         if (isPlayerTurn)
         {
-            ResetAllTiles();
             if (unitManager.ActiveUnit.canMove)
             {
                 inputMode = InputMode.Move;

@@ -6,6 +6,8 @@ MonoImporter:
   defaultReferences:
   - defaultMaterial: {instanceID: 0}
   - highlightMaterial: {fileID: 2100000, guid: 031bf41653817f64d809470b8330eeb6, type: 2}
+  - reachableMaterial: {fileID: 2100000, guid: 006cc235245a1c6409b42bbc23172d4f, type: 2}
+  - shootableMaterial: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

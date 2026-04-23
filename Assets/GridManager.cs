@@ -11,6 +11,8 @@ public class GridManager : MonoBehaviour
     public Material tileLight;
     public Material highlightMaterial;
     public Material reachableMaterial;
+    public Material shootableMaterial;
+    public Material wallMaterial;
     public Tile[,] grid;
     
     public GameObject unitPrefab;
@@ -44,6 +46,7 @@ public class GridManager : MonoBehaviour
                 tile.defaultMaterial = ((x + z) % 2 == 0) ? tileLight : tileDark;
                 tile.highlightMaterial = highlightMaterial;
                 tile.reachableMaterial = reachableMaterial;
+                tile.shootableMaterial = shootableMaterial;
                 tile.SetDefault();
                 grid[x, z] = tile;
             }
@@ -57,6 +60,8 @@ public class GridManager : MonoBehaviour
         GameObject wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
         wall.transform.position = new Vector3(x, 0.5f, z);
         wall.tag = "Wall";
+        Renderer r = wall.GetComponent<Renderer>();
+        r.material = wallMaterial;
     }
 
     void CreateWalls()
