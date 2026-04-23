@@ -1,10 +1,12 @@
 using UnityEngine;
+using Unity.Mathematics;
 using System.Collections.Generic;
 
 public class GridInput : MonoBehaviour
 {
     private Tile currentTile;
     private List<Tile> reachableTiles = new List<Tile>();
+    private List<Tile> shootableTiles = new List<Tile>();
     
     public UnityEngine.UI.Button shootButton;
     
@@ -46,6 +48,12 @@ public class GridInput : MonoBehaviour
         Unit clickedUnit = hit.collider.GetComponent<Unit>();
         if (clickedUnit != null)
         {
+            if (clickedUnit.unitType == UnitType.Enemy && inputMode == InputMode.Shoot)
+            {
+                Debug.Log("--- Enemy clicked ---");
+                HandleShoot(clickedUnit.tile);
+                return;
+            }
             if (!clickedUnit.canMove && !clickedUnit.canShoot)
             {
                 Debug.Log($"\"{clickedUnit.name}\" can't do anything");
@@ -79,42 +87,11 @@ public class GridInput : MonoBehaviour
             switch (inputMode)
             {
             case InputMode.Move:
-                if (!unitManager.ActiveUnit.canMove)
-                {
-                    Debug.Log($"\"{unitManager.ActiveUnit.name}\" can't move on this turn.");
-                    break;
-                }
                 HandleMove(tile);
-                unitManager.ActiveUnit.canMove = false;
-                SetShootMode();
-                MaybeEndTurn();
                 break;
                 
             case InputMode.Shoot:
                 HandleShoot(tile);
-                unitManager.ActiveUnit.canMove = unitManager.ActiveUnit.canShoot = false;
-                
-                isPlayerTurn = unitManager.ChangeActiveUnitToActableOrEndTurn();
-                if (isPlayerTurn)
-                {
-                    ResetAllTiles();
-                    if (unitManager.ActiveUnit.canMove)
-                    {
-                        inputMode = InputMode.Move;
-                        unitManager.ChangeUnitColorSelected();
-                        ShowReachableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.maxDistance);
-                    }
-                    else if (unitManager.ActiveUnit.canShoot)
-                    {
-                        inputMode = InputMode.Shoot;
-                        unitManager.ChangeUnitColorSelected();
-                        ShowShootableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.shootDistance);
-                    }
-                    else
-                    {
-                        inputMode = InputMode.None;
-                    }
-                }
                 break;
             
             case InputMode.Dialoge:
@@ -149,6 +126,8 @@ public class GridInput : MonoBehaviour
                 tile.SetDefault();
             }
         }
+        reachableTiles.Clear();
+        shootableTiles.Clear();
     }
     
     void ShowReachableTiles(Tile tile, int dist)
@@ -162,8 +141,8 @@ public class GridInput : MonoBehaviour
     
     void ShowShootableTiles(Tile tile, int dist)
     {
-        reachableTiles = gridManager.GetReachableTiles(tile, dist);
-        foreach (Tile t in reachableTiles)
+        shootableTiles = gridManager.GetShootableTiles(tile, dist);
+        foreach (Tile t in shootableTiles)
         {
             t.SetShootable();
         }
@@ -172,25 +151,43 @@ public class GridInput : MonoBehaviour
     
     void HandleMove(Tile tile)
     {
-        Debug.Log("HandleMove");
+        //Debug.Log("HandleMove");
+        if (!unitManager.ActiveUnit.canMove)
+        {
+            Debug.Log($"\"{unitManager.ActiveUnit.name}\" can't move on this turn.");
+            return;
+        }
         currentTile?.SetDefault();
         currentTile = tile;
         currentTile.SetHighlight();
-            
-        foreach (Tile t in reachableTiles)
-        {
-            t.SetDefault();
-        }
-        reachableTiles.Clear();
+        
+        ResetAllTiles();
         unitManager.ActiveUnit.MoveTo(
             gridManager.FindPath(unitManager.ActiveUnit.tile, tile),
             tile);
         ShowShootableTiles(tile, unitManager.ActiveUnit.shootDistance);
+        unitManager.ActiveUnit.canMove = false;
+        SetShootMode();
+        MaybeEndTurn();
     }
     
     void HandleShoot(Tile tile)
     {
         Debug.Log("HandleShoot");
+        if (!unitManager.ActiveUnit.canShoot)
+        {
+            Debug.Log($"\"{unitManager.ActiveUnit.name}\" can't shoot on this turn.");
+            return;
+        }
+        
+        int tileDist = 
+            math.abs(tile.x - unitManager.ActiveUnit.tile.x) +
+            math.abs(tile.z - unitManager.ActiveUnit.tile.z);
+        if (tileDist > unitManager.ActiveUnit.shootDistance)
+        {
+            Debug.Log("Target is to far");
+            return;
+        }
         
         Vector3 origin = unitManager.ActiveUnit.transform.position + Vector3.up * 0.5f;
         Vector3 target = tile.transform.position + Vector3.up * 0.5f;
@@ -199,20 +196,48 @@ public class GridInput : MonoBehaviour
         float dist = Vector3.Distance(origin, target);
         
         RaycastHit hit;
-        
         if (Physics.Raycast(origin, direction, out hit, dist))
         {
             if (hit.collider.gameObject.CompareTag("Wall"))
             {
                 Debug.Log("Wall hitted");
                 Debug.DrawLine(origin, hit.point, Color.red, 2f);
-                return;
+                goto epiloge;
+                //return true;
+            }
+            if (tile.isOccupied)
+            {
+                unitManager.DamageUnitAtTile(tile, 9999);
             }
         }
         
         Debug.Log("Hit");
         Debug.DrawLine(origin, target, Color.green, 2f);
         
+    epiloge:
+        unitManager.ActiveUnit.canMove = unitManager.ActiveUnit.canShoot = false;
+        
+        isPlayerTurn = unitManager.ChangeActiveUnitToActableOrEndTurn();
+        if (isPlayerTurn)
+        {
+            ResetAllTiles();
+            if (unitManager.ActiveUnit.canMove)
+            {
+                inputMode = InputMode.Move;
+                unitManager.ChangeUnitColorSelected();
+                ShowReachableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.maxDistance);
+            }
+            else if (unitManager.ActiveUnit.canShoot)
+            {
+                inputMode = InputMode.Shoot;
+                unitManager.ChangeUnitColorSelected();
+                ShowShootableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.shootDistance);
+            }
+            else
+            {
+                inputMode = InputMode.None;
+            }
+        }
     }
     
     void HandleDialoge()

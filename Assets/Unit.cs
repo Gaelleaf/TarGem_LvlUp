@@ -11,12 +11,14 @@ public class Unit : MonoBehaviour
     
     public bool canShoot = false;
     public bool canMove = false;
+    public Tile tile;
+    public bool isAlive = true;
 
     private Vector3 targetPos;
     private Stack<Tile> pathToTarget = new Stack<Tile>();
     private bool isMoving = false;
     
-    public Tile tile;
+
 
     // Update is called once per frame
     void Update()

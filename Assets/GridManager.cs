@@ -95,6 +95,16 @@ public class GridManager : MonoBehaviour
 
     public List<Tile> GetReachableTiles(Tile startTile, int range)
     {
+        return GetTilesAtDistanceWithFilter(startTile, range, (Tile n) => (n.isWall || n.isOccupied));
+    }
+    
+    public List<Tile> GetShootableTiles(Tile startTile, int range)
+    {
+        return GetTilesAtDistanceWithFilter(startTile, range, (Tile n) => (n.isWall));
+    }
+    
+    private List<Tile> GetTilesAtDistanceWithFilter(Tile startTile, int range, System.Func<Tile, bool> filter)
+    {
         List<Tile> res = new List<Tile>();
         Queue<Tile> q = new Queue<Tile>();
         Dictionary<Tile, int> dist = new Dictionary<Tile, int>();
@@ -108,7 +118,7 @@ public class GridManager : MonoBehaviour
 
             foreach (Tile n in GetNeighbors(cur))
             {
-                if (n.isWall || n.isOccupied)
+                if (filter(n))
                     continue;
 
                 int d = dist[cur] + 1;
@@ -121,6 +131,7 @@ public class GridManager : MonoBehaviour
             }
         }
         return res;
+        
     }
 
     List<Tile> GetNeighbors(Tile tile)

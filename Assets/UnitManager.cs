@@ -92,6 +92,38 @@ public class UnitManager : MonoBehaviour
         return true;
     }
     
+    public void DamageUnitAtTile(Tile tile, int dmg)
+    {
+        foreach (Unit u in fiends)
+        {
+            if (u.tile == tile)
+            {
+                DamageUnit(u, dmg);
+                return;
+            }
+        }
+        foreach (Unit u in fiends)
+        {
+            if (u.tile == tile)
+            {
+                DamageUnit(u, dmg);
+                return;
+            }
+        }
+        Debug.Log($"No unit on {tile.name} found!");
+    }
+    
+    private void DamageUnit(Unit unit, int dmg)
+    {
+        if (dmg > 0)
+        {
+            Debug.Log($"{unit.name} is dead");
+            unit.isAlive = false;
+            unit.tile = null;
+            unit.transform.position = new Vector3(1e5f, 1e5f, 1e5f);
+        }
+    }
+    
     public void ChangeUnitColorSelected()
     {
         if (ActiveUnit == null) return;
