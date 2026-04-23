@@ -11,7 +11,8 @@ public class GridInput : MonoBehaviour
     public InputMode inputMode = InputMode.Move;
     public GridManager gridManager;
     public UnitManager unitManager;
-    public Unit unit;
+    //public Unit unit;
+    private bool isPlayerTurn = true;
 
     void Start()
     {
@@ -20,6 +21,12 @@ public class GridInput : MonoBehaviour
 
     void Update()
     {
+        if (!isPlayerTurn)
+        {
+            ResetAllTiles();
+            // TODO: MAKE ENEMY TURN
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             HandleClick();
@@ -39,22 +46,25 @@ public class GridInput : MonoBehaviour
         Unit clickedUnit = hit.collider.GetComponent<Unit>();
         if (clickedUnit != null)
         {
-            Debug.Log($"Unit clocked {clickedUnit}");
-            unitManager.SelectUnit(clickedUnit);
-            if (unit != null)
+            if (!clickedUnit.canMove && !clickedUnit.canShoot)
             {
-                unitManager.ChangeUnitColorPlayer(unit);
+                Debug.Log($"\"{clickedUnit.name}\" can't do anything");
+                return;
             }
+            unitManager.ChangeUnitColorPlayer();
+            unitManager.SelectUnit(clickedUnit);
             
             ResetAllTiles();
-            unit = unitManager.ActiveUnit;
-            unitManager.ChangeUnitColorSelected(unit);
-            if (unit.canMove)
-                ShowReachableTiles(unit.tile, unit.maxDistance);
-            else if (unit.canShoot)
+            unitManager.ChangeUnitColorSelected();
+            if (unitManager.ActiveUnit.canMove)
+            {
+                inputMode = InputMode.Move;
+                ShowReachableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.maxDistance);
+            }
+            else if (unitManager.ActiveUnit.canShoot)
             {
                 SetShootMode();
-                ShowReachableTiles(unit.tile, unit.shootDistance);
+                ShowShootableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.shootDistance);
             }
             return;
         }
@@ -63,29 +73,57 @@ public class GridInput : MonoBehaviour
         Tile tile = hit.collider.GetComponent<Tile>();
         if (tile != null)
         {
-            Debug.Log("Tile clocked");
+            //Debug.Log("Tile clocked");
             if (unitManager.ActiveUnit == null) return;
             
             switch (inputMode)
             {
             case InputMode.Move:
+                if (!unitManager.ActiveUnit.canMove)
+                {
+                    Debug.Log($"\"{unitManager.ActiveUnit.name}\" can't move on this turn.");
+                    break;
+                }
                 HandleMove(tile);
+                unitManager.ActiveUnit.canMove = false;
+                SetShootMode();
                 MaybeEndTurn();
                 break;
                 
             case InputMode.Shoot:
                 HandleShoot(tile);
-                inputMode = InputMode.Move;
-                unit.canMove = false;
-                unit.canShoot = false;
-                MaybeEndTurn();
+                unitManager.ActiveUnit.canMove = unitManager.ActiveUnit.canShoot = false;
+                
+                isPlayerTurn = unitManager.ChangeActiveUnitToActableOrEndTurn();
+                if (isPlayerTurn)
+                {
+                    ResetAllTiles();
+                    if (unitManager.ActiveUnit.canMove)
+                    {
+                        inputMode = InputMode.Move;
+                        unitManager.ChangeUnitColorSelected();
+                        ShowReachableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.maxDistance);
+                    }
+                    else if (unitManager.ActiveUnit.canShoot)
+                    {
+                        inputMode = InputMode.Shoot;
+                        unitManager.ChangeUnitColorSelected();
+                        ShowShootableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.shootDistance);
+                    }
+                    else
+                    {
+                        inputMode = InputMode.None;
+                    }
+                }
                 break;
             
             case InputMode.Dialoge:
                 HandleDialoge();
                 break;
             
+            case InputMode.None:
             default:
+                Debug.LogError("Input mode is unhandled");
                 break;
             }
             return;
@@ -97,6 +135,7 @@ public class GridInput : MonoBehaviour
         if (unitManager.AllUnitsDoEverything())
         {
             unitManager.EndTurn();
+            isPlayerTurn = false;
         }
     }
     
@@ -121,6 +160,16 @@ public class GridInput : MonoBehaviour
         }
     }
     
+    void ShowShootableTiles(Tile tile, int dist)
+    {
+        reachableTiles = gridManager.GetReachableTiles(tile, dist);
+        foreach (Tile t in reachableTiles)
+        {
+            t.SetShootable();
+        }
+        
+    }
+    
     void HandleMove(Tile tile)
     {
         Debug.Log("HandleMove");
@@ -133,15 +182,17 @@ public class GridInput : MonoBehaviour
             t.SetDefault();
         }
         reachableTiles.Clear();
-        unit.MoveTo(gridManager.FindPath(unit.tile, tile), tile);
-        ShowReachableTiles(tile, unit.maxDistance);
+        unitManager.ActiveUnit.MoveTo(
+            gridManager.FindPath(unitManager.ActiveUnit.tile, tile),
+            tile);
+        ShowShootableTiles(tile, unitManager.ActiveUnit.shootDistance);
     }
     
     void HandleShoot(Tile tile)
     {
         Debug.Log("HandleShoot");
         
-        Vector3 origin = unit.transform.position + Vector3.up * 0.5f;
+        Vector3 origin = unitManager.ActiveUnit.transform.position + Vector3.up * 0.5f;
         Vector3 target = tile.transform.position + Vector3.up * 0.5f;
         
         Vector3 direction = (target - origin).normalized;
@@ -161,6 +212,7 @@ public class GridInput : MonoBehaviour
         
         Debug.Log("Hit");
         Debug.DrawLine(origin, target, Color.green, 2f);
+        
     }
     
     void HandleDialoge()
@@ -170,6 +222,11 @@ public class GridInput : MonoBehaviour
     
     public void SetShootMode()
     {
+        if (!unitManager.ActiveUnit.canShoot)
+        {
+            Debug.Log($"\"{unitManager.ActiveUnit.name}\" can't shoot.");
+            return;
+        }
         inputMode = InputMode.Shoot;
         Debug.Log("Chosen InputMode.Shoot");
     }

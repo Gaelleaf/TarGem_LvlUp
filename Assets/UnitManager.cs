@@ -5,7 +5,7 @@ public class UnitManager : MonoBehaviour
 {
     public List<Unit> fiends = new List<Unit>();
     public List<Unit> friends = new List<Unit>();
-    public int activeFriendIdx = 0;
+    //public int activeFriendIdx = 0;
     public Unit ActiveUnit {get; private set; }
     
     public Material playerMaterial;
@@ -48,6 +48,26 @@ public class UnitManager : MonoBehaviour
         ActiveUnit = unit;
     }
     
+    // returns true if new ActiveUnit is found; returns false if it's not and turn is ended;
+    public bool ChangeActiveUnitToActableOrEndTurn()
+    {
+        foreach (Unit u in friends)
+        {
+            if (u != ActiveUnit)
+            {
+                if (u.canMove || u.canShoot)
+                {
+                    ChangeUnitColorPlayer();
+                    SelectUnit(u);
+                    return true;
+                }
+            }
+        }
+        ChangeUnitColorPlayer();
+        EndTurn();
+        return false;
+    }
+    
     public void EndTurn()
     {
         foreach(Unit u in friends)
@@ -64,30 +84,56 @@ public class UnitManager : MonoBehaviour
     {
         foreach (Unit u in friends)
         {
-            if (!u.canMove && !u.canShoot)
+            if (u.canMove || u.canShoot)
+            {
                 return false;
+            }
         }
         return true;
     }
     
-    
-    private int colorCount = 0;
-    public void ChangeUnitColorSelected(Unit unit)
+    public void ChangeUnitColorSelected()
     {
-        Debug.Log($"Change color {++colorCount} of {unit.name}");
-        Renderer r = unit.GetComponentInChildren<Renderer>();
+        if (ActiveUnit == null) return;
+        Renderer r = ActiveUnit.GetComponentInChildren<Renderer>();
         r.material = selectedMaterial;
     }
-    public void ChangeUnitColorPlayer(Unit unit)
+    
+    private void ChangeUnitColorSelected(Unit unit)
+    {   
+        Unit u = ActiveUnit;
+        ActiveUnit = unit;
+        ChangeUnitColorSelected();
+        ActiveUnit = u;
+    }
+    
+    public void ChangeUnitColorPlayer()
     {
-        Debug.Log($"Change color {++colorCount} of {unit.name}");
-        Renderer r = unit.GetComponentInChildren<Renderer>();
+        if (ActiveUnit == null) return;
+        Renderer r = ActiveUnit.GetComponentInChildren<Renderer>();
         r.material = playerMaterial;
     }
-    public void ChangeUnitColorEnemy(Unit unit)
+    
+    private void ChangeUnitColorPlayer(Unit unit)
+    {   
+        Unit u = ActiveUnit;
+        ActiveUnit = unit;
+        ChangeUnitColorPlayer();
+        ActiveUnit = u;
+    }
+    
+    public void ChangeUnitColorEnemy()
     {
-        Debug.Log($"Change color {++colorCount} of {unit.name}");
-        Renderer r = unit.GetComponentInChildren<Renderer>();
+        if (ActiveUnit == null) return;
+        Renderer r = ActiveUnit.GetComponentInChildren<Renderer>();
         r.material = enemyMaterial;
+    }    
+    
+    private void ChangeUnitColorEnemy(Unit unit)
+    {   
+        Unit u = ActiveUnit;
+        ActiveUnit = unit;
+        ChangeUnitColorEnemy();
+        ActiveUnit = u;
     }
 }

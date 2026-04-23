@@ -6,6 +6,7 @@ public class Tile : MonoBehaviour
     public Material defaultMaterial;
     public Material highlightMaterial;
     public Material reachableMaterial;
+    public Material shootableMaterial;
     
     public int x;
     public int z;
@@ -31,5 +32,10 @@ public class Tile : MonoBehaviour
     public void SetReacheble()
     {
         renderer.material = reachableMaterial;
+    }
+    
+    public void SetShootable()
+    {
+        renderer.material = shootableMaterial;
     }
 }

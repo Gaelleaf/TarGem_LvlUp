@@ -4,5 +4,6 @@ public enum InputMode
 {
     Move,
     Shoot,
-    Dialoge
+    Dialoge,
+    None
 }

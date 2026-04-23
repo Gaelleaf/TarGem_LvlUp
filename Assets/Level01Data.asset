@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Level01Data
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
   camera:
-    pos: {x: 5, y: 10, z: 2}
-    rotation: {x: 75, y: 0, z: 0}
-    orthographicSize: 5
+    pos: {x: 5, y: 10, z: 4.5}
+    rotation: {x: 90, y: 0, z: 0}
+    orthographicSize: 6
   width: 10
   height: 10
   wallPositions:
