@@ -55,7 +55,7 @@ public class UnitManager : MonoBehaviour
         {
             if (u != ActiveUnit)
             {
-                if (u.canMove || u.canShoot)
+                if (u.isAlive && (u.canMove || u.canShoot))
                 {
                     ChangeUnitColorPlayer();
                     SelectUnit(u);
@@ -84,7 +84,7 @@ public class UnitManager : MonoBehaviour
     {
         foreach (Unit u in friends)
         {
-            if (u.canMove || u.canShoot)
+            if (u.isAlive && (u.canMove || u.canShoot))
             {
                 return false;
             }
@@ -102,7 +102,7 @@ public class UnitManager : MonoBehaviour
                 return;
             }
         }
-        foreach (Unit u in fiends)
+        foreach (Unit u in friends)
         {
             if (u.tile == tile)
             {
@@ -167,5 +167,29 @@ public class UnitManager : MonoBehaviour
         ActiveUnit = unit;
         ChangeUnitColorEnemy();
         ActiveUnit = u;
+    }
+    
+    public bool AllEnemyUnitsAreDead()
+    {
+        foreach (Unit u in fiends)
+        {
+            if (u.isAlive)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public bool AllPlayerUnitsAreDead()
+    {
+        foreach (Unit u in friends)
+        {
+            if (u.isAlive)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

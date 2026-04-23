@@ -23,10 +23,23 @@ public class GridInput : MonoBehaviour
 
     void Update()
     {
+        if (unitManager.AllEnemyUnitsAreDead())
+        {
+            // TODO
+            Debug.Log("Player win!");
+            return;
+        }
+        if (unitManager.AllPlayerUnitsAreDead())
+        {
+            // TODO
+            Debug.Log("Enemy won!");
+            return;
+        }
         if (!isPlayerTurn)
         {
             ResetAllTiles();
             // TODO: MAKE ENEMY TURN
+            // isPlayerTurn = true;
             return;
         }
         if (Input.GetMouseButtonDown(0))
@@ -253,6 +266,8 @@ public class GridInput : MonoBehaviour
             return;
         }
         inputMode = InputMode.Shoot;
+        ResetAllTiles();
+        ShowShootableTiles(unitManager.ActiveUnit.tile, unitManager.ActiveUnit.shootDistance);
         Debug.Log("Chosen InputMode.Shoot");
     }
 }
