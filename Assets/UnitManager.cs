@@ -8,6 +8,11 @@ public class UnitManager : MonoBehaviour
     public int activeFriendIdx = 0;
     public Unit ActiveUnit {get; private set; }
     
+    public Material playerMaterial;
+    public Material selectedMaterial;
+    public Material enemyMaterial;
+    
+    
     
     public void RegisterUnit(Unit unit)
     {
@@ -15,10 +20,14 @@ public class UnitManager : MonoBehaviour
         {
         case UnitType.Player:
             friends.Add(unit);
+            unit.name = $"Player unit {friends.Count}";
+            ChangeUnitColorPlayer(unit);
             break;
             
         case UnitType.Enemy:
             fiends.Add(unit);
+            unit.name = $"Enemy unit {fiends.Count}";
+            ChangeUnitColorEnemy(unit);
             break;
             
         default:
@@ -59,5 +68,26 @@ public class UnitManager : MonoBehaviour
                 return false;
         }
         return true;
+    }
+    
+    
+    private int colorCount = 0;
+    public void ChangeUnitColorSelected(Unit unit)
+    {
+        Debug.Log($"Change color {++colorCount} of {unit.name}");
+        Renderer r = unit.GetComponentInChildren<Renderer>();
+        r.material = selectedMaterial;
+    }
+    public void ChangeUnitColorPlayer(Unit unit)
+    {
+        Debug.Log($"Change color {++colorCount} of {unit.name}");
+        Renderer r = unit.GetComponentInChildren<Renderer>();
+        r.material = playerMaterial;
+    }
+    public void ChangeUnitColorEnemy(Unit unit)
+    {
+        Debug.Log($"Change color {++colorCount} of {unit.name}");
+        Renderer r = unit.GetComponentInChildren<Renderer>();
+        r.material = enemyMaterial;
     }
 }

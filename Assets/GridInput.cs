@@ -42,9 +42,13 @@ public class GridInput : MonoBehaviour
             Debug.Log($"Unit clocked {clickedUnit}");
             unitManager.SelectUnit(clickedUnit);
             if (unit != null)
-                unit.GetComponent<Renderer>().material.color = Color.white;
+            {
+                unitManager.ChangeUnitColorPlayer(unit);
+            }
+            
+            ResetAllTiles();
             unit = unitManager.ActiveUnit;
-            unit.GetComponent<Renderer>().material.color = Color.yellow;
+            unitManager.ChangeUnitColorSelected(unit);
             if (unit.canMove)
                 ShowReachableTiles(unit.tile, unit.maxDistance);
             else if (unit.canShoot)
@@ -93,6 +97,18 @@ public class GridInput : MonoBehaviour
         if (unitManager.AllUnitsDoEverything())
         {
             unitManager.EndTurn();
+        }
+    }
+    
+    void ResetAllTiles()
+    {
+        for (int x = 0; x < gridManager.WIDTH; ++x)
+        {
+            for (int z = 0; z < gridManager.HEIGHT; ++z)
+            {
+                Tile tile = gridManager.grid[x, z];
+                tile.SetDefault();
+            }
         }
     }
     

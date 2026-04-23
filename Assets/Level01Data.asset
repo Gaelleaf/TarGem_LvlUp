@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12dde28b040249649b282fef83e6b70b, type: 3}
   m_Name: Level01Data
   m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  camera:
+    pos: {x: 5, y: 10, z: 2}
+    rotation: {x: 75, y: 0, z: 0}
+    orthographicSize: 5
   width: 10
   height: 10
   wallPositions:

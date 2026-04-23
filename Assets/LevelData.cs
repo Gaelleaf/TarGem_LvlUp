@@ -9,9 +9,19 @@ public class UnitSpawnData
     public int shootDist;
 }
 
+[System.Serializable]
+public class CameraPosition
+{
+    public Vector3 pos;
+    public Vector3 rotation;
+    public int orthographicSize;
+}
+
 [CreateAssetMenu(fileName = "LevelData", menuName = "Scriptable Objects/LevelData")]
 public class LevelData : ScriptableObject
 {
+    public CameraPosition camera;
+    
     public int width;
     public int height;
     

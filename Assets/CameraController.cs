@@ -3,16 +3,12 @@ using Unity.Mathematics;
 
 public class CameraController : MonoBehaviour
 {
+    public LevelData levelData;
+    
     void Start()
     {
-        transform.position = new Vector3(5f, 10f, 4.5f);
-        transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-        GetComponent<Camera>().orthographicSize = 6;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        transform.position = levelData.camera.pos;//new Vector3(5f, 10f, 2f);
+        transform.rotation = Quaternion.Euler(levelData.camera.rotation);//Quaternion.Euler(75f, 0f, 0f);
+        GetComponent<Camera>().orthographicSize = levelData.camera.orthographicSize;
     }
 }
