@@ -16,7 +16,7 @@ MonoBehaviour:
     pos: {x: 5, y: 10, z: 2}
     rotation: {x: 75, y: 0, z: 0}
     orthographicSize: 6
-  levelNumber: 2
+  levelNumber: 1
   width: 10
   height: 10
   wallPositions:
