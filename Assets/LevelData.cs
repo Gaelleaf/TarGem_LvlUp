@@ -21,6 +21,7 @@ public class CameraPosition
 public class LevelData : ScriptableObject
 {
     public CameraPosition camera;
+    public int levelNumber;
     
     public int width;
     public int height;

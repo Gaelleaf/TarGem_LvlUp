@@ -48,9 +48,7 @@ public class GridInput : MonoBehaviour
                 Debug.LogError("DialogueManager не найден!");
             }
             isLevelEnded = true;
-            
-            SceneManager.LoadScene("SampleScene2");
-            
+            ChangeScene();
             return;
         }
         if (unitManager.AllPlayerUnitsAreDead())
@@ -72,10 +70,8 @@ public class GridInput : MonoBehaviour
             {
                 Debug.LogError("DialogueManager не найден!");
             }
-            
-            SceneManager.LoadScene("LevelSelection");
-            
             isLevelEnded = true;
+            ChangeScene();
             return;
         }
         if (!isPlayerTurn)
@@ -90,6 +86,21 @@ public class GridInput : MonoBehaviour
         {
             HandleClick();
         }
+    }
+    
+    void ChangeScene()
+    {
+        switch (gridManager.levelData.levelNumber)
+        {
+        case 1:
+            SceneManager.LoadScene("SampleScene2");
+            return;
+        case 2:
+            SceneManager.LoadScene("LevelSelection");
+            return;
+        }
+            
+            
     }
 
     void HandleClick()
