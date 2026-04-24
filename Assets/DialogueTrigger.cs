@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     public Dialogue dialogue;
-    
+    public GridManager gridManager;
 
     void Start()
     {
@@ -15,23 +15,32 @@ public class DialogueTrigger : MonoBehaviour
     {
         yield return null;
         
-        Dialogue initDialogue = new Dialogue();
-        initDialogue.name = "Uninteresting Character";
-        initDialogue.sentences = new String[]
+        Dialogue initDialogue1 = new Dialogue();
+        initDialogue1.name = "Uninteresting Character";
+        initDialogue1.sentences = new String[]
         {
             "Очень интересное сообщение в начале уровня",
             "Почему бы тебе не пропустить этот диалог?",
             "Тебе интересно все это читать?"
         };
+        Dialogue initDialogue2 = new Dialogue();
+        initDialogue2.name = "Uninteresting Character №2";
+        initDialogue2.sentences = new String[]
+        {
+            "Вообще неинтересное сообщение в начале 2 уровня",
+            "Почему бы тебе не пропустить этот диалог?",
+            "Тебе интересно все это читать?"
+        };
         
         DialogueManager manager = FindObjectOfType<DialogueManager>();
-        if (manager != null)
+        switch (gridManager.levelData.levelNumber)
         {
-            manager.StartDialogue(initDialogue);
-        }
-        else
-        {
-            Debug.LogError("DialogueManager не найден!");
+            case 1:
+                manager.StartDialogue(initDialogue1);
+                break;
+            case 2:
+                manager.StartDialogue(initDialogue2);
+                break;
         }
     }
     public void TriggerDialoge()
