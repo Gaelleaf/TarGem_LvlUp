@@ -31,7 +31,7 @@ public class DialogueTrigger : MonoBehaviour
             "Почему бы тебе не пропустить этот диалог?",
             "Тебе интересно все это читать?"
         };
-        
+        gridManager = FindObjectOfType<GridManager>();
         DialogueManager manager = FindObjectOfType<DialogueManager>();
         switch (gridManager.levelData.levelNumber)
         {
