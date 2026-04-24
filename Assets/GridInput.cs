@@ -26,6 +26,7 @@ public class GridInput : MonoBehaviour
 
     void Update()
     {
+        if (unitManager == null) return;
         if (isLevelEnded) return;
         
         if (unitManager.AllEnemyUnitsAreDead())
