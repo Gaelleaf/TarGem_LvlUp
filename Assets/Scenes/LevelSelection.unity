@@ -152,7 +152,6 @@ MonoBehaviour:
   inputMode: 0
   gridManager: {fileID: 0}
   unitManager: {fileID: 0}
-  unit: {fileID: 0}
 --- !u!4 &44148318
 Transform:
   m_ObjectHideFlags: 0
@@ -737,9 +736,7 @@ PrefabInstance:
       objectReference: {fileID: 771115394}
     - target: {fileID: 2860756742541380104, guid: 72c34b7eca959e4429c0bb1e8c7fe50d, type: 3}
       propertyPath: m_text
-      value: 'button
-
-'
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2860756742541380104, guid: 72c34b7eca959e4429c0bb1e8c7fe50d, type: 3}
       propertyPath: m_fontStyle
@@ -908,7 +905,7 @@ PrefabInstance:
       objectReference: {fileID: 707814765}
     - target: {fileID: 2860756742541380104, guid: 72c34b7eca959e4429c0bb1e8c7fe50d, type: 3}
       propertyPath: m_text
-      value: button
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2860756742541380104, guid: 72c34b7eca959e4429c0bb1e8c7fe50d, type: 3}
       propertyPath: m_fontStyle
