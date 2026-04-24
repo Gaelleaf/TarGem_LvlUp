@@ -49,7 +49,7 @@ public class GridInput : MonoBehaviour
             }
             isLevelEnded = true;
             
-            SceneManager.LoadScene("LevelSelection");
+            SceneManager.LoadScene("SampleScene2");
             
             return;
         }

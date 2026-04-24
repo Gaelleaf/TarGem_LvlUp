@@ -13,7 +13,6 @@ public class DialogueTrigger : MonoBehaviour
     }
     IEnumerator StartDialogueAfterDelay()
     {
-        // Ждем один кадр, чтобы все объекты успели инициализироваться
         yield return null;
         
         Dialogue initDialogue = new Dialogue();
