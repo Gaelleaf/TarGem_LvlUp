@@ -1201,8 +1201,8 @@ MonoBehaviour:
   tileLight: {fileID: 2100000, guid: 29eb9a7df7e18dc41a84e17ce58e592e, type: 2}
   highlightMaterial: {fileID: 2100000, guid: 031bf41653817f64d809470b8330eeb6, type: 2}
   reachableMaterial: {fileID: 2100000, guid: 006cc235245a1c6409b42bbc23172d4f, type: 2}
-  shootableMaterial: {fileID: 0}
-  wallMaterial: {fileID: 0}
+  shootableMaterial: {fileID: 2100000, guid: 26489335a2387f84c8b1f78031f660de, type: 2}
+  wallMaterial: {fileID: 2100000, guid: 6186d9cf2d65b744c9ad282082f81a7d, type: 2}
   unitPrefab: {fileID: 1371543043}
 --- !u!4 &839937383
 Transform:
