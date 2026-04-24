@@ -192,4 +192,22 @@ public class UnitManager : MonoBehaviour
         }
         return true;
     }
+    
+    public void MakeEveryUnitActive()
+    {
+        foreach (Unit u in friends)
+        {
+            if (u.isAlive)
+            {
+                u.canMove = u.canShoot = true;
+            }
+        }
+        foreach (Unit u in fiends)
+        {
+            if (u.isAlive)
+            {
+                u.canMove = u.canShoot = true;
+            }
+        }
+    }
 }

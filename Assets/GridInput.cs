@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.Mathematics;
 using System.Collections.Generic;
+using System;
+using UnityEngine.SceneManagement;
 
 public class GridInput : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class GridInput : MonoBehaviour
     public UnitManager unitManager;
     //public Unit unit;
     private bool isPlayerTurn = true;
+    private bool isLevelEnded = false;
 
     void Start()
     {
@@ -23,23 +26,64 @@ public class GridInput : MonoBehaviour
 
     void Update()
     {
+        if (isLevelEnded) return;
+        
         if (unitManager.AllEnemyUnitsAreDead())
         {
             // TODO
             Debug.Log("Player win!");
+            Dialogue d = new Dialogue();
+            d.name = "Interesting character";
+            d.sentences = new String[]{
+                "We won!",
+                "My congrats team!"
+            };
+            DialogueManager manager = FindObjectOfType<DialogueManager>();
+            if (manager != null)
+            {
+                manager.StartDialogue(d);
+            }
+            else
+            {
+                Debug.LogError("DialogueManager не найден!");
+            }
+            isLevelEnded = true;
+            
+            SceneManager.LoadScene("LevelSelection");
+            
             return;
         }
         if (unitManager.AllPlayerUnitsAreDead())
         {
             // TODO
             Debug.Log("Enemy won!");
+            Dialogue d = new Dialogue();
+            d.name = "Interesting character";
+            d.sentences = new String[]{
+                "We lose!",
+                "Oh no :("
+            };
+            DialogueManager manager = FindObjectOfType<DialogueManager>();
+            if (manager != null)
+            {
+                manager.StartDialogue(d);
+            }
+            else
+            {
+                Debug.LogError("DialogueManager не найден!");
+            }
+            
+            SceneManager.LoadScene("LevelSelection");
+            
+            isLevelEnded = true;
             return;
         }
         if (!isPlayerTurn)
         {
             ResetAllTiles();
             // TODO: MAKE ENEMY TURN
-            // isPlayerTurn = true;
+            isPlayerTurn = true;
+            unitManager.MakeEveryUnitActive();
             return;
         }
         if (Input.GetMouseButtonDown(0))
